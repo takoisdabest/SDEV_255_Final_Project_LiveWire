@@ -1,10 +1,11 @@
-const express = require('express');
+import express from 'express';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import Student from '../models/student.js';
+import Course from '../models/course.js';
+import { auth, authorize } from '../middleware/auth.js';
+
 const router = express.Router();
-const Student = require('../models/student');
-const Course = require('../models/course');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const { auth, authorize } = require('../middleware/auth');
 
 // Register a new student
 router.post('/register', async (req, res) => {
@@ -51,8 +52,7 @@ router.delete('/:id/drop', auth, authorize(['student']), async (req, res) => {
   res.send(course);
 });
 
-module.exports = router;
-// Fetch enrolled courses for a student
+// Fetch enrolled courses
 router.get('/:id/enrolled-courses', auth, authorize(['student']), async (req, res) => {
   const student = await Student.findById(req.params.id).populate('enrolledCourses');
   if (!student) {
@@ -60,3 +60,5 @@ router.get('/:id/enrolled-courses', auth, authorize(['student']), async (req, re
   }
   res.send(student.enrolledCourses);
 });
+
+export default router;

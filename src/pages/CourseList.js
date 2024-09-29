@@ -1,21 +1,40 @@
 import React, { useEffect, useState } from 'react';
-import { getCourses } from '../services/api';
+import { fetchCourses } from '../services/api.js';
 
 const CourseList = () => {
-  const [courses, setCourses] = useState([]);
+  const [courses, setCourses] = useState([]); 
+  const [loading, setLoading] = useState(true); 
+  const [error, setError] = useState(null); 
 
   useEffect(() => {
-    getCourses().then(response => setCourses(response.data));
+    const loadCourses = async () => {
+      try {
+        const response = await fetchCourses();
+        setCourses(response.data); 
+      } catch (err) {
+        setError(err.message); 
+      } finally {
+        setLoading(false); 
+      }
+    };
+
+    loadCourses();
   }, []);
+
+  if (loading) {
+    return <div>Loading courses...</div>;
+  }
+
+  if (error) {
+    return <div>Error loading courses: {error}</div>;
+  }
 
   return (
     <div>
-      <h1>Courses</h1>
+      <h1>Course List</h1>
       <ul>
-        {courses.map(course => (
-          <li key={course._id}>
-            <a href={`/courses/${course._id}`}>{course.name}</a>
-          </li>
+        {courses.map((course) => (
+          <li key={course.id}>{course.name}</li> 
         ))}
       </ul>
     </div>

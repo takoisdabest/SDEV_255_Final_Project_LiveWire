@@ -1,55 +1,54 @@
 import React, { useEffect, useState } from 'react';
-import { getCourses, enrollCourse, dropCourse, getEnrolledCourses } from '../services/api';
+import { fetchStudentCourses } from '../services/api.js';
 
 const StudentDashboard = () => {
-  const [courses, setCourses] = useState([]);
-  const [enrolledCourses, setEnrolledCourses] = useState([]);
-  const studentId = 'logged-in-student-id'; // Replace with actual logged-in student ID
+  const [studentCourses, setStudentCourses] = useState([]);
+  const [loading, setLoading] = useState(true); 
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Fetch all courses
-    getCourses().then(response => setCourses(response.data));
+    const studentId = localStorage.getItem('studentId');
+    console.log('Retrieved Student ID:', studentId); 
+  
+    const fetchCourses = async () => {
+      if (studentId) {
+        try {
+          const data = await fetchStudentCourses(studentId);
+          setStudentCourses(data);
+        } catch (err) {
+          console.error('Failed to fetch courses:', err);
+          setError('Failed to load courses. Please try again.');
+        } finally {
+          setLoading(false);
+        }
+      } else {
+        setError('No student ID found. Please log in again.');
+        setLoading(false);
+      }
+    };
+  
+    fetchCourses();
+  }, []);
+  
 
-    // Fetch enrolled courses for the logged-in student
-    getEnrolledCourses(studentId).then(response => setEnrolledCourses(response.data.map(course => course._id)));
-  }, [studentId]);
+  if (loading) {
+    return <div>Loading courses...</div>; 
+  }
 
-  const handleEnroll = (courseId) => {
-    enrollCourse(studentId, courseId).then(() => {
-      alert('Enrolled successfully');
-      setEnrolledCourses([...enrolledCourses, courseId]);
-    });
-  };
-
-  const handleDrop = (courseId) => {
-    dropCourse(studentId, courseId).then(() => {
-      alert('Dropped successfully');
-      setEnrolledCourses(enrolledCourses.filter(id => id !== courseId));
-    });
-  };
+  if (error) {
+    return <div>Error: {error}</div>; 
+  }
 
   return (
-    <div>
-      <h1>Student Dashboard</h1>
-      <h2>Available Courses</h2>
+    <div className="list-container">
+      <h2 className="dashboard-title">My Courses</h2>
       <ul>
-        {courses.map(course => (
-          <li key={course._id}>
-            {course.name}
-            {enrolledCourses.includes(course._id) ? (
-              <button onClick={() => handleDrop(course._id)}>Drop</button>
-            ) : (
-              <button onClick={() => handleEnroll(course._id)}>Enroll</button>
-            )}
+        {studentCourses.map(course => (
+          <li key={course._id} className="dashboard-item">
+            <h3>{course.name}</h3>
+            <button onClick={() => window.location.href = `/courses/${course._id}`}>Go to Course</button>
           </li>
         ))}
-      </ul>
-      <h2>Enrolled Courses</h2>
-      <ul>
-        {enrolledCourses.map(courseId => {
-          const course = courses.find(c => c._id === courseId);
-          return course ? <li key={course._id}>{course.name}</li> : null;
-        })}
       </ul>
     </div>
   );
