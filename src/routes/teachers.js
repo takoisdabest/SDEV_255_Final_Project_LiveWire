@@ -1,8 +1,9 @@
-const express = require('express');
+import express from 'express';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import Teacher from '../models/teacher.js';
+
 const router = express.Router();
-const Teacher = require('../models/teacher');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 
 // Add a new teacher
 router.post('/', async (req, res) => {
@@ -35,4 +36,4 @@ router.delete('/:id', async (req, res) => {
   res.status(204).send();
 });
 
-module.exports = router;
+export default router;

@@ -1,24 +1,26 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import CourseList from './pages/CourseList';
-import CourseDetail from './pages/CourseDetail';
-import AddCourse from './pages/AddCourse';
-import Register from './pages/Register';
-import Login from './pages/Login';
-import StudentDashboard from './pages/StudentDashboard';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Navbar from './pages/Navbar.js'; 
+import CourseList from './pages/CourseList.js';
+import CourseDetail from './pages/CourseDetail.js';
+import AddCourse from './pages/AddCourse.js';
+import Register from './pages/Register.js';
+import Login from './pages/Login.js';
+import StudentDashboard from './pages/StudentDashboard.js';
 
 function App() {
   return (
     <Router>
       <div className="App">
-        <Switch>
-          <Route path="/" exact component={CourseList} />
-          <Route path="/courses/:id" component={CourseDetail} />
-          <Route path="/add-course" component={AddCourse} />
-          <Route path="/register" component={Register} />
-          <Route path="/login" component={Login} />
-          <Route path="/dashboard" component={StudentDashboard} />
-        </Switch>
+        <Navbar /> {/* Navbar*/}
+        <Routes>
+          <Route path="/" element={<CourseList />} />
+          <Route path="/courses/:id" element={<CourseDetail />} />
+          <Route path="/add-course" element={<AddCourse />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/dashboard" element={<StudentDashboard />} />
+        </Routes>
       </div>
     </Router>
   );

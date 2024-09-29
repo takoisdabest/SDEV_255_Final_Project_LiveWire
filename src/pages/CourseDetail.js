@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getCourse } from '../services/api';
+import { getCourse } from '../services/api.js';
 
 const CourseDetail = ({ match }) => {
   const [course, setCourse] = useState(null);

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { registerStudent } from '../services/api';
+import { registerStudent } from '../services/api.js';
 
 const Register = () => {
   const [student, setStudent] = useState({
@@ -22,12 +22,18 @@ const Register = () => {
   };
 
   return (
-    <div>
-      <h1>Register</h1>
+    <div className="form-container">
+      <h2 className="form-title">Register</h2>
       <form onSubmit={handleSubmit}>
+        <label>Name</label>
         <input type="text" name="name" value={student.name} onChange={handleChange} placeholder="Name" required />
+        
+        <label>Email</label>
         <input type="email" name="email" value={student.email} onChange={handleChange} placeholder="Email" required />
+        
+        <label>Password</label>
         <input type="password" name="password" value={student.password} onChange={handleChange} placeholder="Password" required />
+        
         <button type="submit">Register</button>
       </form>
     </div>

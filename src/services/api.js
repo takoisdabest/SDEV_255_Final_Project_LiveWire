@@ -20,3 +20,14 @@ export const loginStudent = (credentials) => axios.post(`${API_URL}/students/log
 export const enrollCourse = (studentId, courseId) => axios.post(`${API_URL}/students/${studentId}/enroll`, { courseId });
 export const dropCourse = (studentId, courseId) => axios.delete(`${API_URL}/students/${studentId}/drop`, { data: { courseId } });
 export const getEnrolledCourses = (studentId) => axios.get(`${API_URL}/students/${studentId}/enrolled-courses`);
+
+export const fetchCourses = () => getCourses(); 
+export const fetchStudentCourses = async (studentId) => {
+  try {
+    const response = await axios.get(`${API_URL}/students/${studentId}/enrolled-courses`);
+    return response.data; 
+  } catch (error) {
+    console.error('Error fetching student courses:', error);
+    throw error; 
+  }
+};
