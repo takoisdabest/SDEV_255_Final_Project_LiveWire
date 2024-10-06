@@ -1,53 +1,30 @@
 import React, { useEffect, useState } from 'react';
-import { fetchStudentCourses } from '../services/api.js';
+import axios from 'axios';
 
 const StudentDashboard = () => {
-  const [studentCourses, setStudentCourses] = useState([]);
-  const [loading, setLoading] = useState(true); 
-  const [error, setError] = useState(null);
+  const [courses, setCourses] = useState([]);
+
+  // Fetch curses 
+  const fetchCourses = async () => {
+    try {
+      const response = await axios.get('http://localhost:3000/api/courses');
+      setCourses(response.data);
+    } catch (error) {
+      console.error('Error fetching courses:', error);
+      alert('Unable to fetch courses.');
+    }
+  };
 
   useEffect(() => {
-    const studentId = localStorage.getItem('studentId');
-    console.log('Retrieved Student ID:', studentId); 
-  
-    const fetchCourses = async () => {
-      if (studentId) {
-        try {
-          const data = await fetchStudentCourses(studentId);
-          setStudentCourses(data);
-        } catch (err) {
-          console.error('Failed to fetch courses:', err);
-          setError('Failed to load courses. Please try again.');
-        } finally {
-          setLoading(false);
-        }
-      } else {
-        setError('No student ID found. Please log in again.');
-        setLoading(false);
-      }
-    };
-  
     fetchCourses();
   }, []);
-  
-
-  if (loading) {
-    return <div>Loading courses...</div>; 
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>; 
-  }
 
   return (
-    <div className="list-container">
-      <h2 className="dashboard-title">My Courses</h2>
+    <div>
+      <h1>Student Dashboard</h1>
       <ul>
-        {studentCourses.map(course => (
-          <li key={course._id} className="dashboard-item">
-            <h3>{course.name}</h3>
-            <button onClick={() => window.location.href = `/courses/${course._id}`}>Go to Course</button>
-          </li>
+        {courses.map(course => (
+          <li key={course._id}>{course.title}</li>
         ))}
       </ul>
     </div>

@@ -1,19 +1,20 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import cors from 'cors'; 
+import cors from 'cors';
 import courses from './src/routes/courses.js';
 import students from './src/routes/students.js';
 import teachers from './src/routes/teachers.js';
 
 const app = express();
 
-
+// Enable CORS for frontend connection
 app.use(cors({
-  origin: 'http://localhost:3001' 
+  origin: 'http://localhost:3001'
 }));
 
 app.use(express.json());
 
+// Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/college')
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('Could not connect to MongoDB', err));

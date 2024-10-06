@@ -11,20 +11,29 @@ const router = express.Router();
 router.post('/register', async (req, res) => {
   const student = new Student(req.body);
   await student.save();
-  const token = jwt.sign({ _id: student._id }, 'your_jwt_secret');
+  const token = jwt.sign({ _id: student._id, role: student.role }, 'super_secret_secret');
   res.status(201).send({ student, token });
 });
+
 
 // Student login
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
   const student = await Student.findOne({ email });
+
   if (!student || !await bcrypt.compare(password, student.password)) {
     return res.status(400).send({ error: 'Invalid login credentials' });
   }
-  const token = jwt.sign({ _id: student._id }, 'your_jwt_secret');
+
+  const token = jwt.sign({ _id: student._id, role: student.role }, 'super_secret_secret'); 
+
+  student.tokens = student.tokens.concat({ token });
+  await student.save();
+
   res.send({ student, token });
 });
+
+
 
 // Enroll in a course
 router.post('/:id/enroll', auth, authorize(['student']), async (req, res) => {
@@ -32,12 +41,14 @@ router.post('/:id/enroll', auth, authorize(['student']), async (req, res) => {
   if (!course) {
     return res.status(404).send({ error: 'Course not found' });
   }
+  // Ensure that req.user._id refers to the student ID
   course.enrolledStudents.push(req.user._id);
   await course.save();
   req.user.enrolledCourses.push(course._id);
   await req.user.save();
   res.send(course);
 });
+
 
 // Drop a course
 router.delete('/:id/drop', auth, authorize(['student']), async (req, res) => {
@@ -52,7 +63,6 @@ router.delete('/:id/drop', auth, authorize(['student']), async (req, res) => {
   res.send(course);
 });
 
-// Fetch enrolled courses
 router.get('/:id/enrolled-courses', auth, authorize(['student']), async (req, res) => {
   const student = await Student.findById(req.params.id).populate('enrolledCourses');
   if (!student) {
