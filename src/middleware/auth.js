@@ -2,11 +2,13 @@ import jwt from 'jsonwebtoken';
 import Teacher from '../models/teacher.js';
 import Student from '../models/student.js';
 
+// authenticate user with jwt
 export const auth = async (req, res, next) => {
   try {
     const token = req.header('Authorization').replace('Bearer ', '');
-    const decoded = jwt.verify(token, 'your_jwt_secret');
-    const user = await Teacher.findOne({ _id: decoded._id, 'tokens.token': token }) || await Student.findOne({ _id: decoded._id, 'tokens.token': token });
+    const decoded = jwt.verify(token, 'super_secret_secret');
+
+    const user = await Teacher.findById(decoded._id) || await Student.findById(decoded._id);
 
     if (!user) {
       throw new Error('Authentication failed.');
@@ -20,6 +22,7 @@ export const auth = async (req, res, next) => {
   }
 };
 
+// check user's role
 export const authorize = (roles) => (req, res, next) => {
   if (!req.user || !roles.includes(req.user.role)) {
     return res.status(403).send({ error: 'Access denied' });
