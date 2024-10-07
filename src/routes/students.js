@@ -9,12 +9,31 @@ const router = express.Router();
 
 // Register a new student
 router.post('/register', async (req, res) => {
-  const student = new Student(req.body);
-  await student.save();
-  const token = jwt.sign({ _id: student._id, role: student.role }, 'super_secret_secret');
-  res.status(201).send({ student, token });
-});
+  try {
+    const { name, email, password } = req.body;
 
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create a new student with the hashed password
+    const student = new Student({
+      name,
+      email,
+      password: hashedPassword,
+    });
+
+    // Save the student to the database
+    await student.save();
+
+    // Generate JWT token
+    const token = jwt.sign({ _id: student._id, role: student.role }, 'super_secret_secret');
+
+    // Return the student and the token
+    res.status(201).send({ student, token });
+  } catch (error) {
+    res.status(500).send({ error: 'Registration failed' });
+  }
+});
 
 // Student login
 router.post('/login', async (req, res) => {
