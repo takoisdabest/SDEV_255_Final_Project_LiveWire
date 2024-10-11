@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import '../App.css';
 
 const CourseRegistration = () => {
   const [courses, setCourses] = useState([]);
@@ -18,31 +19,56 @@ const CourseRegistration = () => {
     }
   };
 
-  const handleEnroll = async (courseId) => {
+  const handleAddToCart = async (courseId) => {
     try {
-      await axios.post(`http://localhost:3000/api/students/${courseId}/enroll`, {}, {
+      const studentId = localStorage.getItem('studentId');
+      await axios.post(`http://localhost:3000/api/students/${studentId}/add-to-cart`, { courseId }, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
-      alert('Enrolled in course successfully!');
-      fetchCourses();
+      alert('Course added to cart successfully!');
     } catch (error) {
-      console.error('Error enrolling in course:', error);
-      alert('Unable to enroll in course.');
+      console.error('Error adding to cart:', error);
+      alert('Unable to add course to cart.');
     }
   };
 
   return (
-    <div>
+    <div className="course-registration-container">
       <h1>Register for Courses</h1>
-      <ul>
+      <ul className="course-list">
         {courses.map(course => (
-          <li key={course._id}>
-            <Link to={`/course/${course._id}`}>{course.title}</Link>
-            <button className="enroll-button" onClick={() => handleEnroll(course._id)}>Enroll</button>
+          <li key={course._id} className="course-item">
+            <div className="course-info">
+              <Link to={`/course/${course._id}`} className="course-title">{course.title}</Link>
+              <span className="course-description">{course.description}</span>
+            </div>
 
+            {/*Add icons created by Pixel perfect - Flaticon*/}
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/1828/1828817.png"
+              alt="Add to Cart"
+              className="plus-icon"
+              title="Add to Cart"
+              onClick={() => handleAddToCart(course._id)}
+            />
           </li>
         ))}
       </ul>
+
+      {localStorage.getItem('token') && (
+        <div className="shopping-cart-link">
+          <Link to="/shopping-cart">
+
+            {/*Smart cart icons created by Freepik - Flaticon*/}
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/1170/1170678.png"
+              alt="Shopping Cart"
+              className="cart-icon"
+              title="Go to Shopping Cart"
+            />
+          </Link>
+        </div>
+      )}
     </div>
   );
 };

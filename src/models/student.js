@@ -22,6 +22,10 @@ const studentSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Course'
   }],
+  shoppingCart: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Course'
+  }],
   tokens: [{
     token: {
       type: String,
@@ -29,7 +33,6 @@ const studentSchema = new mongoose.Schema({
     }
   }]
 });
-
 
 const Student = mongoose.model('Student', studentSchema);
 

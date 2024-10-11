@@ -3,29 +3,24 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
 const CourseDetails = () => {
-  const { courseId } = useParams();
-  const [course, setCourse] = useState(null);
+  const { courseId } = useParams(); 
+  const [course, setCourse] = useState(null); 
 
   useEffect(() => {
-    const { courseId } = useParams();
-    fetch(`/api/courses/${courseId}`)
-      .then(response => response.json())
-      .then(data => setCourseDetails(data))
-      .catch(error => console.error('Error fetching course details:', error));
-  }, []);
+    const fetchCourseDetails = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3000/api/courses/${courseId}`);
+        setCourse(response.data); 
+      } catch (error) {
+        console.error('Error fetching course details:', error);
+      }
+    };
 
-
-  const fetchCourseDetails = async () => {
-    try {
-      const response = await axios.get(`http://localhost:3000/api/courses/${courseId}`);
-      setCourse(response.data);
-    } catch (error) {
-      console.error('Error fetching course details:', error);
-    }
-  };
+    fetchCourseDetails(); 
+  }, [courseId]); 
 
   if (!course) {
-    return <div>Loading...</div>;
+    return <div>Loading...</div>; 
   }
 
   return (

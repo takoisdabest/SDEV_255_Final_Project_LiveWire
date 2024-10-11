@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { registerStudent } from '../services/api.js';
+import { Link, useNavigate } from 'react-router-dom'; 
 
 const Register = () => {
   const [student, setStudent] = useState({
@@ -7,6 +8,8 @@ const Register = () => {
     email: '',
     password: ''
   });
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,6 +21,8 @@ const Register = () => {
     registerStudent(student).then(() => {
       alert('Registration successful');
       setStudent({ name: '', email: '', password: '' });
+      
+      navigate('/login');
     });
   };
 
@@ -36,6 +41,7 @@ const Register = () => {
 
         <button type="submit">Register</button>
       </form>
+      <p>Are you a teacher? <Link to="/register-teacher">Register here</Link>.</p> 
     </div>
   );
 };

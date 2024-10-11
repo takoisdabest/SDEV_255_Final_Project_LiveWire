@@ -82,7 +82,7 @@ body {
   margin-right: 15px;
 }
 
-/* Login register and logout btn */
+/* Buttons: Login, Register, Logout */
 .login-btn {
   border: 2px solid #007bff;
   padding: 8px 20px;
@@ -95,7 +95,7 @@ body {
   color: white;
 }
 
-/* About Us page */
+/* About Us Page */
 .about-us {
   background-color: #f9f9f9;
   padding: 20px;
@@ -153,7 +153,18 @@ body {
   border-radius: 5px;
 }
 
-/* About Campus section */
+.course-title {
+  font-weight: bold;
+  font-size: 18px;
+  color: #333;
+  text-decoration: none;
+}
+
+.course-title:hover {
+  color: #007bff;
+}
+
+/* About Campus Section */
 .about-campus {
   text-align: center;
   margin: 20px 0;
@@ -183,6 +194,7 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Common Headers */
 h1,
 h2 {
   color: #333;
@@ -190,6 +202,7 @@ h2 {
   margin-bottom: 20px;
 }
 
+/* List Containers */
 .list-container {
   max-width: 1200px;
   margin: 20px auto;
@@ -232,6 +245,7 @@ h2 {
   background-color: #0056b3;
 }
 
+/* Enroll Button */
 .enroll-button {
   padding: 10px 15px;
   background-color: #007bff;
@@ -246,6 +260,7 @@ h2 {
   background-color: #0056b3;
 }
 
+/* Forms */
 form {
   display: flex;
   flex-direction: column;
@@ -271,6 +286,58 @@ input[type="number"]:focus {
   outline: none;
 }
 
+.form-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.form-input,
+textarea.form-input.textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  font-family: inherit;
+  color: #333;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+textarea.form-input.textarea {
+  height: 150px;
+  resize: vertical;
+}
+
+.form-input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.submit-btn {
+  padding: 12px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Submit Button */
 button[type="submit"] {
   padding: 12px;
   background-color: #007bff;
@@ -284,12 +351,99 @@ button[type="submit"]:hover {
   background-color: #0056b3;
 }
 
+/* Titles */
 .course-list-title,
 .dashboard-title {
   text-align: center;
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 20px;
+}
+
+/* Course Registration */
+.course-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+}
+
+.course-description {
+  font-size: 16px;
+  color: #777;
+}
+
+.course-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background-color: #f4f4f4;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+.course-registration-container {
+  position: relative;
+  padding: 20px;
+}
+
+/* Cart icon */
+.shopping-cart-link {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.cart-icon {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.cart-icon:hover {
+  transform: scale(1.1);
+}
+
+/* Plus icon */
+.plus-icon {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  margin-left: 10px;
+}
+
+.plus-icon:hover {
+  transform: scale(1.1);
+}
+
+/* trash icons */
+.trash-icon {
+  width: 20px;
+  height: 20px;
+  margin-left: 10px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.trash-icon:hover {
+  transform: scale(1.1);
+}
+
+/* Edit Icon */
+.edit-icon {
+  width: 20px;
+  height: 20px;
+  margin-left: 10px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.edit-icon:hover {
+  transform: scale(1.1);
 }
 
 @media (max-width: 1200px) {
@@ -327,5 +481,3 @@ button[type="submit"]:hover {
     padding-right: 20px;
   }
 }
-
-

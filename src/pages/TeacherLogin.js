@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
-import { loginStudent } from '../services/api.js';
-import { Link } from 'react-router-dom';
+import { loginTeacher } from '../services/api.js';
 
-const Login = () => {
-  const [credentials, setCredentials] = useState({
-    email: '',
-    password: ''
-  });
+const TeacherLogin = () => {
+  const [credentials, setCredentials] = useState({ email: '', password: '' });
   const [error, setError] = useState(null);
 
   const handleChange = (e) => {
@@ -17,24 +13,18 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await loginStudent(credentials);
-
+      const response = await loginTeacher(credentials);
       localStorage.setItem('token', response.data.token);
-      localStorage.setItem('studentId', response.data.student._id);
-
-      setError(null);
-
       alert('Login successful');
-      window.location.href = '/dashboard';
+      window.location.href = '/courselist';
     } catch (error) {
-      console.error('Login failed:', error);
       setError('Login failed. Please check your email and password.');
     }
   };
 
   return (
     <div className="form-container">
-      <h2 className="form-title">Login</h2>
+      <h2 className="form-title">Teacher Login</h2>
       <form onSubmit={handleSubmit}>
         <label>Email</label>
         <input
@@ -45,7 +35,6 @@ const Login = () => {
           placeholder="Email"
           required
         />
-
         <label>Password</label>
         <input
           type="password"
@@ -55,18 +44,11 @@ const Login = () => {
           placeholder="Password"
           required
         />
-
         <button type="submit">Login</button>
-
         {error && <p style={{ color: 'red' }}>{error}</p>}
-
-        <p>
-          Are you a teacher?{' '}
-          <Link to="/teacher-login">Login here</Link>
-        </p>
       </form>
     </div>
   );
 };
 
-export default Login;
+export default TeacherLogin;

@@ -4,6 +4,9 @@ import { Link } from 'react-router-dom';
 function Navbar() {
   const isLoggedIn = !!localStorage.getItem('token');
 
+  const token = localStorage.getItem('token');
+  const userRole = token ? JSON.parse(atob(token.split('.')[1])).role : null; 
+
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('studentId');
@@ -20,9 +23,19 @@ function Navbar() {
         <ul className="navbar-menu">
           <li><Link to="/" className="navbar-link">About Us</Link></li>
           {isLoggedIn ? (
+            // Teacher or Student navbar
             <>
-              <li><Link to="/register-course" className="navbar-link">Register for a Course</Link></li>
-              <li><Link to="/dashboard" className="navbar-link">Dashboard</Link></li>
+              {userRole === 'teacher' ? (
+                <>
+                  <li><Link to="/add-course" className="navbar-link">Add a Course</Link></li>
+                  <li><Link to="/courselist" className="navbar-link">Course List</Link></li>
+                </>
+              ) : (
+                <>
+                  <li><Link to="/dashboard" className="navbar-link">Dashboard</Link></li>
+                  <li><Link to="/register-course" className="navbar-link">Register for a Course</Link></li>
+                </>
+              )}
               <li>
                 <button className="navbar-link login-btn" onClick={handleLogout}>Logout</button>
               </li>
